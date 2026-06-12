@@ -50,7 +50,7 @@ Most relay control software is laser-focused on one board, one protocol, one ven
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Clone and install with the backends you need
-git clone https://github.com/williamblair333/usb_ch340_relay_control.git gurl
+git clone https://github.com/williamblair333/gurl.git
 cd gurl
 uv sync --extra serial --extra hid --extra dev
 
@@ -111,15 +111,7 @@ uv add relay-control[all]
 
 ### Linux USB Permissions
 
-Save yourself a headache. Run once after plugging in your board:
-
-```bash
-sudo systemctl mask brltty-udev.service
-sudo apt-get remove --yes brltty
-sudo chmod 0666 /dev/ttyUSB0          # or the relevant device
-```
-
-For a permanent fix, use the included udev rule (see [Permissions](#permissions)).
+See [Permissions](#permissions) for a one-time setup that eliminates the need for `sudo` on every run.
 
 ---
 
@@ -160,13 +152,31 @@ relay status                    # all devices, all relays, formatted table
 
 ### Automation
 
-```bash
-# Playfile — CSV format: relay_number,duration_seconds
-relay play playfile.txt
+**Playfile** — CSV format: `relay_number,duration_seconds`. The relay turns ON for the given duration then OFF automatically.
 
-# Run a command file N times or forever
-relay run commands.txt --cycles 10
-relay run commands.txt --cycles infinite
+```
+# playfile.txt
+1,5      # relay 1 on for 5 seconds
+2,3      # relay 2 on for 3 seconds
+1,1      # relay 1 on for 1 second
+```
+
+```bash
+relay play playfile.txt
+```
+
+**Command runner** — a file of `relay` CLI commands executed in a loop:
+
+```
+# commands.txt
+relay set basement 1 on
+relay set basement 1 off
+relay pulse garage 1 500
+```
+
+```bash
+relay run commands.txt --cycles 10        # run 10 times
+relay run commands.txt --cycles infinite  # run forever
 ```
 
 ### Daemon (Home Assistant)
@@ -367,41 +377,6 @@ backend.close()
 
 ---
 
-## Playfile Format
-
-The original playfile format is fully supported. Each line: `relay_number,duration_seconds`
-
-```
-# playfile.txt
-1,5      # relay 1 on for 5 seconds
-2,3      # relay 2 on for 3 seconds
-1,1      # relay 1 on for 1 second
-```
-
-```bash
-relay play playfile.txt
-```
-
----
-
-## Command Runner
-
-Run a file of `relay` CLI commands in a loop:
-
-```
-# commands.txt
-relay set basement 1 on
-relay set basement 1 off
-relay pulse garage 1 500
-```
-
-```bash
-relay run commands.txt --cycles 10         # 10 times
-relay run commands.txt --cycles infinite   # forever
-```
-
----
-
 ## Permissions
 
 ### Linux: Permanent udev Rule
@@ -479,7 +454,7 @@ See any existing backend for a reference implementation. The serial backend (`se
 ## Development
 
 ```bash
-git clone https://github.com/williamblair333/usb_ch340_relay_control.git gurl
+git clone https://github.com/williamblair333/gurl.git
 cd gurl
 uv sync --extra dev --extra serial --extra hid
 
@@ -551,7 +526,7 @@ MIT — see [LICENSE.md](LICENSE.md) for full text.
 ## Author
 
 **William Blair**  
-[Create an Issue](https://github.com/williamblair333/usb_ch340_relay_control/issues)
+[Create an Issue](https://github.com/williamblair333/gurl/issues)
 
 ---
 
