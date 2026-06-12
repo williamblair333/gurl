@@ -1,5 +1,9 @@
 # GURL — Grand Unified Relay Logic
 
+<p align="center">
+  <img src="gurl.jpg" alt="GURL mascot" width="340">
+</p>
+
 > **One Python tool to rule every relay.**  
 > Serial. HID. Modbus. MQTT. HTTP. Sonoff. GPIO. Zigbee. Z-Wave. Home Assistant.  
 > If it switches, GURL speaks its language.
