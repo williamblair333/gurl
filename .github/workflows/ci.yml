@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check if project is implemented
+        id: check
+        run: |
+          if [ ! -f pyproject.toml ]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "pyproject.toml not found — implementation pending (Plan 1)"
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install uv
+        if: steps.check.outputs.skip == 'false'
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - name: Set up Python ${{ matrix.python-version }}
+        if: steps.check.outputs.skip == 'false'
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        if: steps.check.outputs.skip == 'false'
+        run: uv sync --extra dev --extra serial
+
+      - name: Lint
+        if: steps.check.outputs.skip == 'false'
+        run: uv run ruff check src/
+
+      - name: Test
+        if: steps.check.outputs.skip == 'false'
+        run: uv run pytest --tb=short -q

@@ -10,7 +10,7 @@
 
 ![Python](https://img.shields.io/badge/python-3.11%2B-blue?logo=python)
 ![uv](https://img.shields.io/badge/uv-managed-purple)
-![License](https://img.shields.io/badge/license-MIT-green)
+![License](https://img.shields.io/badge/license-GPL--3.0-blue)
 ![Protocols](https://img.shields.io/badge/protocols-10%2B-orange)
 ![HA Compatible](https://img.shields.io/badge/Home%20Assistant-MQTT%20Discovery-41BDF5?logo=home-assistant)
 
@@ -523,7 +523,9 @@ Pull requests welcome. Before you start:
 
 ## License
 
-MIT — see [LICENSE.md](LICENSE.md) for full text.
+GNU General Public License v3.0 — see [LICENSE](LICENSE) for full text.
+
+In short: you can use, modify, and distribute GURL freely, but derivative works must also be GPL-3.0. Commercial use is permitted.
 
 ---
 
